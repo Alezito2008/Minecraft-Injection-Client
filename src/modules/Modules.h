@@ -5,22 +5,27 @@
 
 class Module {
 public:
-    Module(const std::string& n) : name(n) {}
+    Module(const std::string& n);
+    Module::~Module();
 
     virtual const std::string& getName() const { return name; };
     inline bool isEnabled() const { return enabled; }
 
-    virtual void onEnable() {};
-    virtual void onDisable() {};
+    virtual void onEnable() = 0;
+    virtual void onDisable() = 0;
+    virtual void onTick() {};
 
-    void Toggle() {
+    inline void Toggle() {
         enabled = !enabled;
-        if (enabled) onEnable();
-        else onDisable();
+        enabled ? onEnable() : onDisable();
     };
+
+    inline void Enable() { enabled = true; }
+    inline void Disable() { enabled = false; }
 
 private:
     std::string name;
+protected:
     bool enabled = false;
 };
 

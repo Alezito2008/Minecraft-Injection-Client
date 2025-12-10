@@ -9,10 +9,14 @@ set(CMAKE_GENERATOR_PLATFORM x64)
 add_library(JVM SHARED IMPORTED)
 
 add_library(InjectionClient SHARED
-    dllmain.cpp
-    main.cpp
-    functions.cpp
-    modules.cpp
+    src/dllmain.cpp
+    src/main.cpp
+    src/functions.cpp
+    src/modules/Modules.cpp
+    src/modules/fly.cpp
+    src/utils/jni_utils.cpp
+    src/mc/Minecraft.cpp
+    src/mc/Player.cpp
 )
 
 target_link_libraries(InjectionClient PRIVATE
@@ -21,5 +25,6 @@ target_link_libraries(InjectionClient PRIVATE
 
 target_include_directories(InjectionClient PRIVATE
     ${CMAKE_CURRENT_SOURCE_DIR}/thirdparty/include
-    ${CMAKE_CURRENT_SOURCE_DIR}/include
+    ${CMAKE_CURRENT_SOURCE_DIR}/src/include
+    ${CMAKE_CURRENT_SOURCE_DIR}/src
 )

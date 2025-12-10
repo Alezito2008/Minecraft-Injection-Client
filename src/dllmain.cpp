@@ -1,12 +1,9 @@
-#include "windows.h"
 #include <iostream>
+#include <windows.h>
 #include "main.h"
+#include "utils/jni_utils.h"
 
 FILE* pFile = nullptr;
-
-#include "jni/jni.h"
-JavaVM* vm;
-JNIEnv* env = nullptr;
 
 DWORD WINAPI init(LPVOID module) {
     HMODULE mod = (HMODULE) module;
