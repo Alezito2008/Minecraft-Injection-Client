@@ -11,7 +11,6 @@ add_library(JVM SHARED IMPORTED)
 add_library(InjectionClient SHARED
     src/dllmain.cpp
     src/main.cpp
-    src/functions.cpp
     src/modules/Modules.cpp
     src/modules/fly.cpp
     src/utils/jni_utils.cpp

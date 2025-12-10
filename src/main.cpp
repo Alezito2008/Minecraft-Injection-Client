@@ -8,14 +8,14 @@
 void client_main(HMODULE hModule) {
     while (true) {
         for (const auto mod : modules) {
-            mod->onTick();
+            mod->Tick();
         }
 
         if (GetAsyncKeyState(VK_F9)) {
-            std::cout << "Enabling all" << std::endl;
+            std::cout << "Toggling all" << std::endl;
             for (const auto mod : modules) {
-                std::cout << "Enabled: " << mod->getName() << std::endl;
-                mod->Enable();
+                std::cout << (mod->isEnabled() ? "Enabled: " : "Disabled: ") << mod->getName() << std::endl;
+                mod->Toggle();
             }
         }
 

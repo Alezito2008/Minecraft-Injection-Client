@@ -11,6 +11,8 @@ public:
     virtual const std::string& getName() const { return name; };
     inline bool isEnabled() const { return enabled; }
 
+    void Tick();
+
     virtual void onEnable() = 0;
     virtual void onDisable() = 0;
     virtual void onTick() {};

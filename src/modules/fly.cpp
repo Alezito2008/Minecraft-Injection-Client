@@ -1,5 +1,6 @@
 #include <iostream>
 
+#include "mc/Minecraft.h"
 #include "modules.h"
 #include "utils/jni_utils.h"
 #include "functions.h"
@@ -10,7 +11,15 @@ public:
 
     void onTick() override {
         if (enabled) {
-            player_jump(env);
+            Minecraft& mc = Minecraft::get();
+            Player* p = mc.getPlayer();
+
+            if (!p) {
+                std::cout << "Player not found, not jumping" << std::endl;
+                return;
+            }
+            
+            p->jumpFromGround();
         }
     }
 

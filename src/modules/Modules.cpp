@@ -14,3 +14,9 @@ Module::~Module()
         modules.end()
     );
 }
+
+void Module::Tick()
+{
+    if (!enabled) return;
+    onTick();
+}
