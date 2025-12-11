@@ -29,8 +29,9 @@ void client_main(HMODULE hModule) {
         Sleep(50);
     }
 
-    std::cout << "Exiting..." << std::endl;
+    std::cout << "[CLIENT] Starting cleanup" << std::endl;
     UnhookOpenGL();
+    std::cout << "[CLIENT] Exiting... (you can close this window now)" << std::endl;
     
     if (vm) vm->DetachCurrentThread();
     FreeConsole();

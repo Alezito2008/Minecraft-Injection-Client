@@ -8,6 +8,19 @@ set(CMAKE_GENERATOR_PLATFORM x64)
 
 add_library(JVM SHARED IMPORTED)
 
+add_subdirectory(thirdparty/minhook)
+
+set(IMGUI_DIR ${CMAKE_CURRENT_SOURCE_DIR}/thirdparty/imgui)
+
+set(IMGUI_SOURCES
+    ${IMGUI_DIR}/imgui.cpp
+    ${IMGUI_DIR}/imgui_draw.cpp
+    ${IMGUI_DIR}/imgui_widgets.cpp
+    ${IMGUI_DIR}/imgui_tables.cpp
+    ${IMGUI_DIR}/backends/imgui_impl_win32.cpp
+    ${IMGUI_DIR}/backends/imgui_impl_opengl3.cpp
+)
+
 add_library(InjectionClient SHARED
     src/dllmain.cpp
     src/main.cpp
@@ -17,17 +30,19 @@ add_library(InjectionClient SHARED
     src/mc/Minecraft.cpp
     src/mc/Player.cpp
     src/hooks/opengl_hook.cpp
-)
 
-add_subdirectory(thirdparty/minhook)
+    ${IMGUI_SOURCES}
+)
 
 target_link_libraries(InjectionClient PRIVATE
     ${CMAKE_CURRENT_SOURCE_DIR}/thirdparty/lib/jvm.lib
     minhook
+    opengl32
 )
 
 target_include_directories(InjectionClient PRIVATE
     ${CMAKE_CURRENT_SOURCE_DIR}/thirdparty/include
     ${CMAKE_CURRENT_SOURCE_DIR}/src/include
     ${CMAKE_CURRENT_SOURCE_DIR}/src
+    ${IMGUI_DIR}
 )

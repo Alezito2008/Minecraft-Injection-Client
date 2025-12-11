@@ -12,7 +12,7 @@ DWORD WINAPI init(LPVOID module) {
     AllocConsole();
     freopen_s(&pFile, "CONOUT$", "w", stdout);
 
-    std::cout << "Client injected" << std::endl;
+    std::cout << "[CLIENT] Client injected" << std::endl;
 
     jsize vmCount;
     if (JNI_GetCreatedJavaVMs(&vm, 1, &vmCount) != JNI_OK || vmCount == 0) {

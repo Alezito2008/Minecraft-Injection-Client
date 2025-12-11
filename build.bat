@@ -1,3 +1,4 @@
+@echo off
 cls
 cd build
 del Debug\InjectionClient.dll
