@@ -4,8 +4,11 @@
 #include "utils/jni_utils.h"
 #include "modules/modules.h"
 #include "functions.h"
+#include "hooks/opengl_hook.h"
 
 void client_main(HMODULE hModule) {
+    HookOpenGL();
+
     while (true) {
         for (const auto mod : modules) {
             mod->Tick();
@@ -27,6 +30,8 @@ void client_main(HMODULE hModule) {
     }
 
     std::cout << "Exiting..." << std::endl;
+    UnhookOpenGL();
+    
     if (vm) vm->DetachCurrentThread();
     FreeConsole();
 

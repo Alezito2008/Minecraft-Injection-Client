@@ -16,10 +16,14 @@ add_library(InjectionClient SHARED
     src/utils/jni_utils.cpp
     src/mc/Minecraft.cpp
     src/mc/Player.cpp
+    src/hooks/opengl_hook.cpp
 )
+
+add_subdirectory(thirdparty/minhook)
 
 target_link_libraries(InjectionClient PRIVATE
     ${CMAKE_CURRENT_SOURCE_DIR}/thirdparty/lib/jvm.lib
+    minhook
 )
 
 target_include_directories(InjectionClient PRIVATE

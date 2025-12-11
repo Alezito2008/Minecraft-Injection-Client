@@ -16,7 +16,7 @@ DWORD WINAPI init(LPVOID module) {
 
     jsize vmCount;
     if (JNI_GetCreatedJavaVMs(&vm, 1, &vmCount) != JNI_OK || vmCount == 0) {
-        std::cout << "Java vm not found" << std::endl;
+        std::cout << "[JNI] Java vm not found" << std::endl;
         return 0;
     }
 
@@ -25,10 +25,10 @@ DWORD WINAPI init(LPVOID module) {
         res = vm->AttachCurrentThread((void**)&env, nullptr);
     }
     if (res != JNI_OK) {
-        std::cout << "Failed setting up JNI" << std::endl;
+        std::cout << "[JNI] Failed setting up JNI" << std::endl;
     }
     if (env != nullptr) {
-        std::cout << "JNI attached" << std::endl;
+        std::cout << "[JNI] JNI attached" << std::endl;
         client_main(mod);
     }
 
