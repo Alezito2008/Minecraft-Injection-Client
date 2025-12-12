@@ -7,6 +7,8 @@
 #include <backends/imgui_impl_opengl3.h>
 #include <backends/imgui_impl_win32.h>
 
+#include "GUI.h"
+
 #include <gl/GL.h>
 
 using SwapBuffers_t = BOOL(WINAPI*)(HDC);
@@ -17,10 +19,9 @@ extern IMGUI_IMPL_API LRESULT ImGui_ImplWin32_WndProcHandler(HWND hWnd, UINT msg
 static SwapBuffers_t oSwapBuffers = nullptr;
 static void* pSwapBuffers = nullptr;
 
-static bool ImGuiInitialized = false;
+static bool initialized = false;
 static HWND hWindow = nullptr;
 static WNDPROC oWndProc = nullptr;
-static HGLRC imguiContext = nullptr;
 
 LRESULT CALLBACK HookedWndProc(HWND hwnd, UINT msg, WPARAM wParam, LPARAM lParam)
 {   
@@ -34,42 +35,18 @@ LRESULT CALLBACK HookedWndProc(HWND hwnd, UINT msg, WPARAM wParam, LPARAM lParam
 }
 
 BOOL WINAPI HookSwapBuffers(HDC hdc) {
-    HGLRC originalContext = wglGetCurrentContext();
-    if (!originalContext) return oSwapBuffers(hdc);
-
-    if (!ImGuiInitialized) {
-        ImGuiInitialized = true;
-        std::cout << "[IMGUI] Initializing ImGui" << std::endl;
-
-        imguiContext = wglCreateContext(hdc);
-
-        IMGUI_CHECKVERSION();
-        ImGui::CreateContext();
-        ImGui::StyleColorsDark();
-
+    if (!initialized) {
+        initialized = true;
         // Redirect windows events to ImGui
         hWindow = WindowFromDC(hdc);
         oWndProc = (WNDPROC)SetWindowLongPtr(hWindow, GWLP_WNDPROC, (LONG_PTR)HookedWndProc);
         
-        ImGui_ImplWin32_Init(hWindow);
-        ImGui_ImplOpenGL3_Init();
+        HGLRC originalContext = wglGetCurrentContext();
+        GUI::Init(hWindow, hdc, originalContext);
+        GUI::Enable(); // DEBUG
     }
-    // std::cout << "[HOOK] SwapBuffers called" << std::endl;
 
-    wglMakeCurrent(hdc, imguiContext);
-
-    ImGui_ImplOpenGL3_NewFrame();
-    ImGui_ImplWin32_NewFrame();
-    ImGui::NewFrame();
-
-    ImGui::Begin("Test");
-    ImGui::Text("This is a test");
-    ImGui::End();
-
-    ImGui::Render();
-    ImGui_ImplOpenGL3_RenderDrawData(ImGui::GetDrawData());
-
-    wglMakeCurrent(hdc, originalContext);
+    GUI::Draw();
 
     return oSwapBuffers(hdc);
 }
@@ -113,9 +90,5 @@ void UnhookOpenGL()
     MH_Uninitialize();
 
     SetWindowLongPtr(hWindow, GWLP_WNDPROC, (LONG_PTR)oWndProc);
-
-    std::cout << "[IMGUI] Shutting down" << std::endl;
-    ImGui_ImplOpenGL3_Shutdown();
-    ImGui_ImplWin32_Shutdown();
-    ImGui::DestroyContext();
+    GUI::Shutdown();
 }

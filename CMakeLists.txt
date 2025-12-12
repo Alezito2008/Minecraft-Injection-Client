@@ -24,6 +24,7 @@ set(IMGUI_SOURCES
 add_library(InjectionClient SHARED
     src/dllmain.cpp
     src/main.cpp
+    src/GUI.cpp
     src/modules/Modules.cpp
     src/modules/fly.cpp
     src/utils/jni_utils.cpp
