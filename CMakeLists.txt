@@ -31,8 +31,9 @@ add_library(InjectionClient SHARED
     src/dllmain.cpp
     src/main.cpp
     src/GUI.cpp
+    src/managers/InputManager.cpp
     src/modules/Modules.cpp
-    src/modules/fly.cpp
+    src/modules/Fly/Fly.cpp
     src/utils/jni_utils.cpp
     src/mc/Minecraft.cpp
     src/mc/Player.cpp

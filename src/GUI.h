@@ -10,6 +10,7 @@ namespace GUI {
 
     void Show();
     void Hide();
+    void Toggle();
     bool IsVisible();
 
     HGLRC GetContext();

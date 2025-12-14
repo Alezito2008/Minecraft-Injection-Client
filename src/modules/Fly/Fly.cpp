@@ -1,9 +1,8 @@
 #include <iostream>
 
-#include "mc/Minecraft.h"
-#include "modules.h"
+#include "modules/modules.h"
 #include "utils/jni_utils.h"
-#include "functions.h"
+#include "mc/Minecraft.h"
 
 class FlyModule : public Module {
 public:

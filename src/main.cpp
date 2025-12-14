@@ -3,8 +3,8 @@
 #include <iostream>
 #include "utils/jni_utils.h"
 #include "modules/modules.h"
-#include "functions.h"
 #include "hooks/opengl_hook.h"
+#include "GUI.h"
 
 void client_main(HMODULE hModule) {
     HookOpenGL();
@@ -14,6 +14,7 @@ void client_main(HMODULE hModule) {
             mod->Tick();
         }
 
+        // Toggle all
         if (GetAsyncKeyState(VK_F9)) {
             std::cout << "Toggling all" << std::endl;
             for (const auto mod : modules) {
@@ -21,6 +22,13 @@ void client_main(HMODULE hModule) {
             }
         }
 
+        // Click GUI
+        if (GetAsyncKeyState(VK_RSHIFT)) {
+            std::cout << "Toggling ClickGUI" << std::endl;
+            GUI::Toggle();
+        }
+
+        // Exit
         if (GetAsyncKeyState(VK_F10)) {
             break;
         }
@@ -30,9 +38,15 @@ void client_main(HMODULE hModule) {
 
     std::cout << "[CLIENT] Starting cleanup" << std::endl;
     UnhookOpenGL();
-    std::cout << "[CLIENT] Exiting... (you can close this window now)" << std::endl;
+    std::cout << "[CLIENT] Exiting..." << std::endl;
     
     if (vm) vm->DetachCurrentThread();
+
+    // Give some time to shut down
+    // FIXME
+    Sleep(100);
+    std::cout << "You can now close this window" << std::endl;
+
     FreeConsole();
     FreeLibraryAndExitThread(hModule, 0);
 }

@@ -10,6 +10,7 @@ DWORD WINAPI init(LPVOID module) {
 
     FreeConsole();
     AllocConsole();
+    SetConsoleTitleA("Injection Client Debugger");
     freopen_s(&pFile, "CONOUT$", "w", stdout);
 
     std::cout << "[CLIENT] Client injected" << std::endl;

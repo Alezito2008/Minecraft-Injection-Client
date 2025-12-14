@@ -61,12 +61,19 @@ void GUI::Draw()
 
 void GUI::Show()
 {
+    std::cout << "Called GUI::Show()" << std::endl;
     isVisible = true;
 }
 
 void GUI::Hide()
 {
     isVisible = false;
+}
+
+void GUI::Toggle()
+{
+    isVisible ? Hide() : Show();
+    std::cout << "Visible: " << isVisible << std::endl;
 }
 
 bool GUI::IsVisible()
