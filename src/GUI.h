@@ -8,9 +8,9 @@ namespace GUI {
 
     void Draw();
 
-    void Enable();
-    void Disable();
-    bool IsEnabled();
+    void Show();
+    void Hide();
+    bool IsVisible();
 
     HGLRC GetContext();
 }

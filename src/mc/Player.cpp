@@ -3,10 +3,7 @@
 
 Player::Player(jobject playerObj)
 {
-    jclass playerClass = env->GetObjectClass(playerObj);
-
-    m_instance = env->NewGlobalRef(playerObj);
-    m_class = (jclass) env->NewGlobalRef(playerClass);
+    m_instance = playerObj;
 }
 
 Player::~Player() {
@@ -14,15 +11,29 @@ Player::~Player() {
         env->DeleteGlobalRef(m_instance);
         m_instance = nullptr;
     }
-
-    if (m_class) {
-        env->DeleteGlobalRef(m_class);
-        m_class = nullptr;
-    }
 }
 
-void Player::jumpFromGround()
+void Player::JumpFromGround()
 {
-    jmethodID jumpMethod = JNI::GetMethod(m_class, "jumpFromGround", "()V");
+    jclass playerClassLocal = env->GetObjectClass(m_instance);
+    jmethodID jumpMethod = JNI::GetMethod(playerClassLocal, "jumpFromGround", "()V");
     env->CallVoidMethod(m_instance, jumpMethod);
+}
+
+void Player::SetCanFly(bool canFly)
+{
+    jclass playerClassLocal = env->GetObjectClass(m_instance);
+    jfieldID abilitiesField = JNI::GetField(playerClassLocal, "abilities", "Lnet/minecraft/world/entity/player/Abilities;");
+    jobject abilitiesObj = env->GetObjectField(m_instance, abilitiesField);
+    jclass abilitiesClass = env->GetObjectClass(abilitiesObj);
+    jfieldID mayflyField = JNI::GetField(abilitiesClass, "mayfly", "Z");
+    env->SetBooleanField(
+        abilitiesObj,
+        mayflyField,
+        (canFly ? JNI_TRUE : JNI_FALSE) // Set mayFly value
+    );
+    // Free memory
+    env->DeleteLocalRef(abilitiesObj);
+    env->DeleteLocalRef(abilitiesClass);
+    env->DeleteLocalRef(playerClassLocal);
 }

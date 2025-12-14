@@ -10,23 +10,21 @@ public:
     FlyModule() : Module("Fly") {}
 
     void onTick() override {
-        if (enabled) {
-            Minecraft& mc = Minecraft::get();
-            Player* p = mc.getPlayer();
-
-            if (!p) {
-                std::cout << "Player not found, not jumping" << std::endl;
-                return;
-            }
-            
-            p->jumpFromGround();
-        }
+        
     }
 
     void onEnable() override {
-        std::cout << "Enabled flight" << std::endl;
+        Minecraft& mc = Minecraft::get();
+        Player* p = mc.getPlayer();
+        p->SetCanFly(true);
+        delete p;
     }
-    void onDisable() override {}
+    void onDisable() override {
+        Minecraft& mc = Minecraft::get();
+        Player* p = mc.getPlayer();
+        p->SetCanFly(false);
+        delete p;
+    }
 };
 
 FlyModule flyModule;

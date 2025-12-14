@@ -17,7 +17,6 @@ void client_main(HMODULE hModule) {
         if (GetAsyncKeyState(VK_F9)) {
             std::cout << "Toggling all" << std::endl;
             for (const auto mod : modules) {
-                std::cout << (mod->isEnabled() ? "Enabled: " : "Disabled: ") << mod->getName() << std::endl;
                 mod->Toggle();
             }
         }
@@ -35,6 +34,5 @@ void client_main(HMODULE hModule) {
     
     if (vm) vm->DetachCurrentThread();
     FreeConsole();
-
     FreeLibraryAndExitThread(hModule, 0);
 }

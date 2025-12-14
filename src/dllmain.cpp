@@ -13,6 +13,7 @@ DWORD WINAPI init(LPVOID module) {
     freopen_s(&pFile, "CONOUT$", "w", stdout);
 
     std::cout << "[CLIENT] Client injected" << std::endl;
+    std::cout << "Thread ID: " << GetCurrentThreadId() << std::endl;
 
     jsize vmCount;
     if (JNI_GetCreatedJavaVMs(&vm, 1, &vmCount) != JNI_OK || vmCount == 0) {
@@ -35,20 +36,11 @@ DWORD WINAPI init(LPVOID module) {
     return 0;
 }
 
-BOOL WINAPI DllMain(
-    HINSTANCE hModule,  // handle to DLL module
-    DWORD fdwReason,     // reason for calling function
-    LPVOID lpvReserved )  // reserved
+BOOL WINAPI DllMain(HINSTANCE hModule, DWORD fdwReason, LPVOID /*lpvReserved*/)
 {
-    switch( fdwReason ) 
-    { 
-        case DLL_PROCESS_ATTACH:
-            CreateThread(nullptr, 0, init, hModule, 0, 0);
-            break;
-        case DLL_THREAD_ATTACH:
-        case DLL_THREAD_DETACH:
-        case DLL_PROCESS_DETACH:
-            break;
+    if (fdwReason == DLL_PROCESS_ATTACH) {
+        CreateThread(nullptr, 0, init, hModule, 0, 0);
     }
-    return TRUE;  // Successful DLL_PROCESS_ATTACH.
+
+    return TRUE;
 }

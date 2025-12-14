@@ -6,6 +6,12 @@ set(CMAKE_CXX_STANDARD 17)
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
 set(CMAKE_GENERATOR_PLATFORM x64)
 
+set(CMAKE_EXPORT_COMPILE_COMMANDS ON)
+set(CMAKE_CXX_CLANG_TIDY
+    clang-tidy;
+    -checks=clang-diagnostic-unused-includes
+)
+
 add_library(JVM SHARED IMPORTED)
 
 add_subdirectory(thirdparty/minhook)
@@ -47,3 +53,9 @@ target_include_directories(InjectionClient PRIVATE
     ${CMAKE_CURRENT_SOURCE_DIR}/src
     ${IMGUI_DIR}
 )
+
+if (MSVC)
+    target_compile_options(InjectionClient PRIVATE /W4)
+else()
+    target_compile_options(InjectionClient PRIVATE -Wall -Wextra -Wpedantic)
+endif()

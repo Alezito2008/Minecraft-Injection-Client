@@ -1,6 +1,8 @@
 #include "modules.h"
 
-std::vector<Module*> modules{};
+#include <iostream>
+
+std::vector<Module*> modules;
 
 Module::Module(const std::string &n) : name(n)
 {
@@ -13,6 +15,20 @@ Module::~Module()
         std::remove(modules.begin(), modules.end(), this),
         modules.end()
     );
+}
+
+void Module::Enable()
+{
+    std::cout << "Enabled module: " << getName() << std::endl;
+    enabled = true;
+    onEnable();
+}
+
+void Module::Disable()
+{
+    std::cout << "Disabled module: " << getName() << std::endl;
+    enabled = false;
+    onDisable();
 }
 
 void Module::Tick()

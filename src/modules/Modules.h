@@ -11,24 +11,23 @@ public:
     virtual const std::string& getName() const { return name; };
     inline bool isEnabled() const { return enabled; }
 
+    void Enable();
+    void Disable();
     void Tick();
-
-    virtual void onEnable() = 0;
-    virtual void onDisable() = 0;
-    virtual void onTick() {};
 
     inline void Toggle() {
         enabled = !enabled;
-        enabled ? onEnable() : onDisable();
+        enabled ? Enable() : Disable();
     };
-
-    inline void Enable() { enabled = true; }
-    inline void Disable() { enabled = false; }
 
 private:
     std::string name;
 protected:
     bool enabled = false;
+
+    virtual void onEnable() = 0;
+    virtual void onDisable() = 0;
+    virtual void onTick() = 0;
 };
 
 extern std::vector<Module*> modules;

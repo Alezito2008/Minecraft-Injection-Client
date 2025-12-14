@@ -7,8 +7,8 @@ public:
     Player(jobject playerObj);
     ~Player();
 
-    void jumpFromGround();
+    void JumpFromGround();
+    void SetCanFly(bool canFly);
 private:
     jobject m_instance = nullptr;
-    jclass m_class = nullptr;
 };

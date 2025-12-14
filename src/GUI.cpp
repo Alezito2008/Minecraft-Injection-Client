@@ -10,7 +10,7 @@ static HGLRC s_originalContext = nullptr;
 static HGLRC s_imguiContext = nullptr;
 static HDC s_hdc = nullptr;
 
-static bool isEnabled = false;
+static bool isVisible = false;
 
 void GUI::Init(HWND hWindow, HDC hdc, HGLRC originalContext)
 {
@@ -33,6 +33,7 @@ void GUI::Init(HWND hWindow, HDC hdc, HGLRC originalContext)
 void GUI::Shutdown()
 {
     std::cout << "[GUI] Shutting down" << std::endl;
+    Hide();
     ImGui_ImplOpenGL3_Shutdown();
     ImGui_ImplWin32_Shutdown();
     ImGui::DestroyContext();
@@ -40,7 +41,7 @@ void GUI::Shutdown()
 
 void GUI::Draw()
 {
-    if (!s_originalContext || !isEnabled) return;
+    if (!s_originalContext || !isVisible) return;
 
     wglMakeCurrent(s_hdc, s_imguiContext);
 
@@ -58,19 +59,19 @@ void GUI::Draw()
     wglMakeCurrent(s_hdc, s_originalContext);
 }
 
-void GUI::Enable()
+void GUI::Show()
 {
-    isEnabled = true;
+    isVisible = true;
 }
 
-void GUI::Disable()
+void GUI::Hide()
 {
-    isEnabled = false;
+    isVisible = false;
 }
 
-bool GUI::IsEnabled()
+bool GUI::IsVisible()
 {
-    return isEnabled;
+    return isVisible;
 }
 
 HGLRC GUI::GetContext()

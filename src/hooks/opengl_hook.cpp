@@ -43,7 +43,7 @@ BOOL WINAPI HookSwapBuffers(HDC hdc) {
         
         HGLRC originalContext = wglGetCurrentContext();
         GUI::Init(hWindow, hdc, originalContext);
-        GUI::Enable(); // DEBUG
+        GUI::Show(); // DEBUG
     }
 
     GUI::Draw();
