@@ -25,11 +25,12 @@ static WNDPROC oWndProc = nullptr;
 
 LRESULT CALLBACK HookedWndProc(HWND hwnd, UINT msg, WPARAM wParam, LPARAM lParam)
 {   
-    if (ImGui_ImplWin32_WndProcHandler(hwnd, msg, wParam, lParam))
+    if (GUI::IsVisible()) {
+        if (ImGui_ImplWin32_WndProcHandler(hwnd, msg, wParam, lParam))
+            return TRUE;
+    
         return TRUE;
-
-    ImGuiIO& io = ImGui::GetIO();
-    if (io.WantCaptureMouse || io.WantCaptureKeyboard) return TRUE; // Let ImGui capture mouse and keyboard
+    }
 
     return CallWindowProc(oWndProc, hwnd, msg, wParam, lParam);
 }
@@ -43,7 +44,6 @@ BOOL WINAPI HookSwapBuffers(HDC hdc) {
         
         HGLRC originalContext = wglGetCurrentContext();
         GUI::Init(hWindow, hdc, originalContext);
-        GUI::Show(); // DEBUG
     }
 
     GUI::Draw();

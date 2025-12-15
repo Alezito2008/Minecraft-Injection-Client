@@ -4,10 +4,13 @@
 #include "utils/jni_utils.h"
 #include "modules/modules.h"
 #include "hooks/opengl_hook.h"
+#include "managers/InputManager.h"
 #include "GUI.h"
 
 void client_main(HMODULE hModule) {
     HookOpenGL();
+
+    InputManager::RegisterKey(VK_RSHIFT, GUI::Toggle);
 
     while (true) {
         for (const auto mod : modules) {
@@ -22,17 +25,12 @@ void client_main(HMODULE hModule) {
             }
         }
 
-        // Click GUI
-        if (GetAsyncKeyState(VK_RSHIFT)) {
-            std::cout << "Toggling ClickGUI" << std::endl;
-            GUI::Toggle();
-        }
-
         // Exit
         if (GetAsyncKeyState(VK_F10)) {
             break;
         }
 
+        InputManager::Update();
         Sleep(50);
     }
 
@@ -44,7 +42,7 @@ void client_main(HMODULE hModule) {
 
     // Give some time to shut down
     // FIXME
-    Sleep(100);
+    Sleep(500);
     std::cout << "You can now close this window" << std::endl;
 
     FreeConsole();
