@@ -7,9 +7,9 @@ public:
     Player(jobject playerObj);
     ~Player();
 
-    bool IsSurvival();
-    void JumpFromGround();
-    void SetFlying(bool flying);
+    bool IsSurvival(JNIEnv* env);
+    void JumpFromGround(JNIEnv* env);
+    void SetFlying(JNIEnv* env, bool flying);
 private:
     jobject m_instance = nullptr;
 };

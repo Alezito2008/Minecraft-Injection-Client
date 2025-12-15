@@ -42,27 +42,34 @@ const std::string Module::categoryToString(Categories category)
 
 void Module::RenderDefaultGUI()
 {
-    if (ImGui::Checkbox(name.c_str(), &enabled)) {
-        enabled ? Enable() : Disable();
-    };
+    bool enabled = m_isEnabled;
+    if (ImGui::Selectable(name.c_str(), enabled)) {
+        Toggle();
+    }
 }
 
 void Module::Enable()
 {
     std::cout << "Enabled module: " << getName() << std::endl;
-    enabled = true;
+    m_isEnabled = true;
     onEnable();
 }
 
 void Module::Disable()
 {
     std::cout << "Disabled module: " << getName() << std::endl;
-    enabled = false;
+    m_isEnabled = false;
     onDisable();
+}
+
+void Module::Toggle()
+{
+    m_isEnabled = !m_isEnabled;
+    m_isEnabled ? Enable() : Disable();
 }
 
 void Module::Tick()
 {
-    if (!enabled) return;
+    if (!m_isEnabled) return;
     onTick();
 }

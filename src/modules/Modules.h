@@ -21,23 +21,19 @@ public:
 
     virtual const std::string& getName() const { return name; }
     virtual const Categories getCategory() const { return category; }
-    inline bool isEnabled() const { return enabled; }
+    inline bool isEnabled() const { return m_isEnabled; }
 
     void RenderDefaultGUI();
+    void Toggle();
     void Enable();
     void Disable();
     void Tick();
-
-    inline void Toggle() {
-        enabled = !enabled;
-        enabled ? Enable() : Disable();
-    };
 
 private:
     std::string name;
     Categories category;
 protected:
-    bool enabled = false;
+    bool m_isEnabled = false;
 
     virtual void onEnable() = 0;
     virtual void onDisable() = 0;

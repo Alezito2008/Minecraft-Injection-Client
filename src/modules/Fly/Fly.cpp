@@ -13,15 +13,19 @@ public:
     }
 
     void onEnable() override {
-        Minecraft& mc = Minecraft::get();
+        JNIEnv* env = JNI::GetJNIEnv();
+
+        Minecraft& mc = Minecraft::get(env);
         Player* p = mc.getPlayer();
-        p->SetFlying(true);
+        p->SetFlying(env, true);
         delete p;
     }
     void onDisable() override {
-        Minecraft& mc = Minecraft::get();
+        JNIEnv* env = JNI::GetJNIEnv();
+
+        Minecraft& mc = Minecraft::get(env);
         Player* p = mc.getPlayer();
-        p->SetFlying(false);
+        p->SetFlying(env, false);
         delete p;
     }
 };

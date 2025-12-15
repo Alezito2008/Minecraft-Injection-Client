@@ -4,13 +4,13 @@
 
 class Minecraft {
 public:
-    static Minecraft& get();
+    static Minecraft& get(JNIEnv* env);
 
     inline jobject getJavaInstance() const { return m_instance; }
 
     Player* getPlayer();
 private:
-    Minecraft();
+    Minecraft(JNIEnv *env);
     ~Minecraft();
 
     jobject m_instance = nullptr;

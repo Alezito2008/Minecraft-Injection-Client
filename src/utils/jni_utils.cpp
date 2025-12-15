@@ -1,9 +1,16 @@
 #include "utils/jni_utils.h"
 
-JNIEnv* env = nullptr;
 JavaVM* vm = nullptr;
 
-jclass JNI::FindClass(const char *name)
+JNIEnv* JNI::GetJNIEnv() {
+    JNIEnv* env = nullptr;
+    if (vm->GetEnv((void**)&env, JNI_VERSION_21) != JNI_OK) {
+        vm->AttachCurrentThread((void**)&env, nullptr);
+    }
+    return env;
+}
+
+jclass JNI::FindClass(JNIEnv* env, const char *name)
 {
     jclass local = env->FindClass(name);
     if (!local) 
@@ -13,7 +20,7 @@ jclass JNI::FindClass(const char *name)
     return global;
 }
 
-jmethodID JNI::GetMethod(jclass clazz, const char *name, const char* sig)
+jmethodID JNI::GetMethod(JNIEnv* env, jclass clazz, const char *name, const char* sig)
 {
     jmethodID m = env->GetMethodID(clazz, name, sig);
     if (!m)
@@ -21,7 +28,7 @@ jmethodID JNI::GetMethod(jclass clazz, const char *name, const char* sig)
     return m;
 }
 
-jmethodID JNI::GetStaticMethod(jclass clazz, const char *name, const char *sig)
+jmethodID JNI::GetStaticMethod(JNIEnv* env, jclass clazz, const char *name, const char *sig)
 {
     jmethodID m = env->GetStaticMethodID(clazz, name, sig);
     if (!m)
@@ -29,7 +36,7 @@ jmethodID JNI::GetStaticMethod(jclass clazz, const char *name, const char *sig)
     return m;
 }
 
-jfieldID JNI::GetField(jclass clazz, const char* name, const char* sig)
+jfieldID JNI::GetField(JNIEnv* env, jclass clazz, const char* name, const char* sig)
 {
     jfieldID f = env->GetFieldID(clazz, name, sig);
     if (!f)

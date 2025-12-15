@@ -1,16 +1,17 @@
 #include "Minecraft.h"
 
-Minecraft &Minecraft::get()
+Minecraft &Minecraft::get(JNIEnv *env)
 {
-    static Minecraft inst;
+    static Minecraft inst(env);
     return inst;
 }
 
 Player *Minecraft::getPlayer()
 {
     if (!m_class || !m_instance) return nullptr;
+    JNIEnv* env = JNI::GetJNIEnv();
 
-    jfieldID playerField = JNI::GetField(m_class, "player", "Lnet/minecraft/client/player/LocalPlayer;");
+    jfieldID playerField = JNI::GetField(env, m_class, "player", "Lnet/minecraft/client/player/LocalPlayer;");
     jobject playerObj = env->GetObjectField(m_instance, playerField);
 
     if (!playerObj) return nullptr;
@@ -20,13 +21,14 @@ Player *Minecraft::getPlayer()
     return new Player(globalPlayerObj);
 }
 
-Minecraft::Minecraft()
+Minecraft::Minecraft(JNIEnv *env)
 {
-    JNI::LocalFrame frame;
+    JNI::LocalFrame frame(env);
 
-    jclass mc_class = JNI::FindClass("net/minecraft/client/Minecraft");
+    jclass mc_class = JNI::FindClass(env, "net/minecraft/client/Minecraft");
 
     jmethodID getInstance = JNI::GetStaticMethod(
+        env,
         mc_class,
         "getInstance",
         "()Lnet/minecraft/client/Minecraft;"
@@ -50,6 +52,8 @@ Minecraft::Minecraft()
 
 Minecraft::~Minecraft()
 {
+    JNIEnv* env = JNI::GetJNIEnv();
+
     if (m_class) {
         env->DeleteGlobalRef(m_class);
         m_class = nullptr;
