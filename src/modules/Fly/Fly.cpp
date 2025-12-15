@@ -15,13 +15,13 @@ public:
     void onEnable() override {
         Minecraft& mc = Minecraft::get();
         Player* p = mc.getPlayer();
-        p->SetCanFly(true);
+        p->SetFlying(true);
         delete p;
     }
     void onDisable() override {
         Minecraft& mc = Minecraft::get();
         Player* p = mc.getPlayer();
-        p->SetCanFly(false);
+        p->SetFlying(false);
         delete p;
     }
 };

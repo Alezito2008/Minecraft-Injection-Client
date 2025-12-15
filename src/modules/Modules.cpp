@@ -4,7 +4,7 @@
 
 std::vector<Module*> modules;
 
-Module::Module(const std::string &n) : name(n)
+Module::Module(const std::string &n) : name(n), category(Categories::MISC)
 {
     modules.push_back(this);
 }

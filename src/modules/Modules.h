@@ -5,10 +5,18 @@
 
 class Module {
 public:
+    enum class Categories {
+        MOVEMENT,
+        WORLD,
+        COMBAT,
+        MISC
+    };
+
     Module(const std::string& n);
     Module::~Module();
 
-    virtual const std::string& getName() const { return name; };
+    virtual const std::string& getName() const { return name; }
+    virtual const Categories getCategory() const { return category; }
     inline bool isEnabled() const { return enabled; }
 
     void Enable();
@@ -22,6 +30,7 @@ public:
 
 private:
     std::string name;
+    Categories category;
 protected:
     bool enabled = false;
 

@@ -8,7 +8,7 @@ public:
     ~Player();
 
     void JumpFromGround();
-    void SetCanFly(bool canFly);
+    void SetFlying(bool flying);
 private:
     jobject m_instance = nullptr;
 };
