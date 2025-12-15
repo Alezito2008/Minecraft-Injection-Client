@@ -25,20 +25,6 @@ DWORD WINAPI init(LPVOID module) {
     std::cout << "[JNI] JNI attached" << std::endl;
     client_main(mod);
 
-    // jint res = vm->GetEnv((void**)&env, JNI_VERSION_21);
-    // if (res == JNI_EDETACHED) {
-    //     res = vm->AttachCurrentThread((void**)&env, nullptr);
-    // }
-    // if (res != JNI_OK) {
-    //     std::cout << "[JNI] Failed setting up JNI" << std::endl;
-    // }
-    // if (env != nullptr) {
-    //     std::cout << "[JNI] JNI attached" << std::endl;
-    //     client_main(mod);
-    // }
-
-
-
     return 0;
 }
 

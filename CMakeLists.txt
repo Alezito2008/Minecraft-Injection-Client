@@ -14,7 +14,11 @@ set(CMAKE_CXX_CLANG_TIDY
 
 add_library(JVM SHARED IMPORTED)
 
+# ADD MINHOOK
+
 add_subdirectory(thirdparty/minhook)
+
+# ADD IMGUI
 
 set(IMGUI_DIR ${CMAKE_CURRENT_SOURCE_DIR}/thirdparty/imgui)
 
@@ -26,6 +30,9 @@ set(IMGUI_SOURCES
     ${IMGUI_DIR}/backends/imgui_impl_win32.cpp
     ${IMGUI_DIR}/backends/imgui_impl_opengl3.cpp
 )
+
+# ADD JNIHOOK
+add_subdirectory(thirdparty/jnihook)
 
 add_library(InjectionClient SHARED
     src/dllmain.cpp
@@ -46,6 +53,7 @@ target_link_libraries(InjectionClient PRIVATE
     ${CMAKE_CURRENT_SOURCE_DIR}/thirdparty/lib/jvm.lib
     minhook
     opengl32
+    jnihook
 )
 
 target_include_directories(InjectionClient PRIVATE
