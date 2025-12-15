@@ -11,22 +11,21 @@ void client_main(HMODULE hModule) {
     HookOpenGL();
 
     InputManager::RegisterKey(VK_RSHIFT, GUI::Toggle);
+    InputManager::RegisterKey(VK_ESCAPE, GUI::Hide);
+    InputManager::RegisterKey(VK_F9, [&]{
+        std::cout << "Toggling all" << std::endl;
+        for (const auto mod : modules) {
+            mod->Toggle();
+        }
+    });
 
     while (true) {
         for (const auto mod : modules) {
             mod->Tick();
         }
 
-        // Toggle all
-        if (GetAsyncKeyState(VK_F9)) {
-            std::cout << "Toggling all" << std::endl;
-            for (const auto mod : modules) {
-                mod->Toggle();
-            }
-        }
-
         // Exit
-        if (GetAsyncKeyState(VK_F10)) {
+        if (GetAsyncKeyState(VK_END) || GetAsyncKeyState(VK_F10)) {
             break;
         }
 

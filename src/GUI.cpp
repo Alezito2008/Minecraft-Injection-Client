@@ -49,6 +49,18 @@ void GUI::Draw()
     ImGui_ImplWin32_NewFrame();
     ImGui::NewFrame();
 
+    // Overlay
+
+    ImGui::SetNextWindowPos(ImVec2(0, 0));
+    ImGui::SetNextWindowSize(ImGui::GetIO().DisplaySize);
+    ImGui::SetNextWindowBgAlpha(0.5);
+    ImGui::Begin("Overlay", nullptr, 
+          ImGuiWindowFlags_NoMove | ImGuiWindowFlags_NoResize
+        | ImGuiWindowFlags_NoCollapse | ImGuiWindowFlags_NoTitleBar
+        | ImGuiWindowFlags_NoSavedSettings | ImGuiWindowFlags_NoInputs
+    );
+    ImGui::End();
+
     ImGui::Begin("Test");
     ImGui::Text("This is a test");
     ImGui::End();
