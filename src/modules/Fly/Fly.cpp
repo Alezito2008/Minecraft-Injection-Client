@@ -6,7 +6,7 @@
 
 class FlyModule : public Module {
 public:
-    FlyModule() : Module("Fly") {}
+    FlyModule() : Module("Fly", Categories::MOVEMENT) {}
 
     void onTick() override {
         

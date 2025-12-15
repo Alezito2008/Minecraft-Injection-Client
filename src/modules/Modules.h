@@ -2,6 +2,7 @@
 
 #include <string>
 #include <vector>
+#include <unordered_map>
 
 class Module {
 public:
@@ -12,13 +13,17 @@ public:
         MISC
     };
 
-    Module(const std::string& n);
+    Module(const std::string &n,
+        Module::Categories c = Module::Categories::MISC);
     Module::~Module();
+
+    static const std::string categoryToString(Categories category);
 
     virtual const std::string& getName() const { return name; }
     virtual const Categories getCategory() const { return category; }
     inline bool isEnabled() const { return enabled; }
 
+    void RenderDefaultGUI();
     void Enable();
     void Disable();
     void Tick();
@@ -40,3 +45,4 @@ protected:
 };
 
 extern std::vector<Module*> modules;
+extern std::unordered_map<Module::Categories, std::vector<Module*>> groupedModules;

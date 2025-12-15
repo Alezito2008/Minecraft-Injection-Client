@@ -6,6 +6,8 @@
 #include <backends/imgui_impl_opengl3.h>
 #include <backends/imgui_impl_win32.h>
 
+#include "modules/Modules.h"
+
 static HGLRC s_originalContext = nullptr;
 static HGLRC s_imguiContext = nullptr;
 static HDC s_hdc = nullptr;
@@ -61,9 +63,20 @@ void GUI::Draw()
     );
     ImGui::End();
 
-    ImGui::Begin("Test");
-    ImGui::Text("This is a test");
-    ImGui::End();
+    for (Module::Categories cat : {
+        Module::Categories::COMBAT,
+        Module::Categories::MISC,
+        Module::Categories::MOVEMENT,
+        Module::Categories::WORLD
+    }) {
+        ImGui::Begin(Module::categoryToString(cat).c_str());
+
+        for (auto& mod : groupedModules[cat]) {
+            mod->RenderDefaultGUI();
+        }
+
+        ImGui::End();
+    }
 
     ImGui::Render();
     ImGui_ImplOpenGL3_RenderDrawData(ImGui::GetDrawData());
